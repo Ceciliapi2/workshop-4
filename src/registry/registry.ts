@@ -27,20 +27,12 @@ export async function launchRegistry() {
   });
 
   // RegisterNode route
-  _registry.post("/registerNode", (req: Request<any, RegisterNodeBody>, res: Response) => {
+  _registry.post("/registerNode", (req, res) => {
     const { nodeId, pubKey } = req.body;
-
-    if (!nodeId || !pubKey) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
     const newNode: Node = { nodeId, pubKey };
     registeredNodes.push(newNode);
-
-    res.status(200).json({ message: "Node registered successfully" });
   });
 
-  
 
   const server = _registry.listen(REGISTRY_PORT, () => {
     console.log(`registry is listening on port ${REGISTRY_PORT}`);
