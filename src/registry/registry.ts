@@ -31,7 +31,7 @@ export async function launchRegistry() {
     const { nodeId, pubKey } = req.body;
     const newNode: Node = { nodeId, pubKey };
     registeredNodes.push(newNode);
-    return registeredNodes
+    res.json({ result: registeredNodes });
   });
 
 
