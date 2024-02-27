@@ -30,7 +30,3 @@ export async function launchRegistry() {
 
   return server;
 }
-
-
-
-
