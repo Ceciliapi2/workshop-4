@@ -24,6 +24,11 @@ export async function launchRegistry() {
     res.send("live");
   });
 
+  //Allow nodes to register themselves question 3.1
+  _registry.post('/registerNode', (req, res) => {
+    const { nodeID, ipAddress, port } = req.body;
+  });
+
   const server = _registry.listen(REGISTRY_PORT, () => {
     console.log(`registry is listening on port ${REGISTRY_PORT}`);
   });
