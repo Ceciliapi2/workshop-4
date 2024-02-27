@@ -13,6 +13,8 @@ export type GetNodeRegistryBody = {
   nodes: Node[];
 };
 
+const registeredNodes: Node[] = [];
+
 export async function launchRegistry() {
   const _registry = express();
   _registry.use(express.json());
@@ -24,22 +26,21 @@ export async function launchRegistry() {
     res.send("live");
   });
 
-  // In-memory registry to store registered nodes
-  const registeredNodes = [];
-  // Define a route for POST /registerNode
+  // RegisterNode route
+  _registry.post("/registerNode", (req: Request<any, RegisterNodeBody>, res: Response) => {
+    const { nodeId, pubKey } = req.body;
 
-  _registry.post('/registerNode', (req, res) => {
-  // Extract the necessary information from the request body
-  const { nodeID, ipAddress, port } = req.body;
+    if (!nodeId || !pubKey) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
-  // Validate the required fields
-  if (!nodeID || !ipAddress || !port) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+    const newNode: Node = { nodeId, pubKey };
+    registeredNodes.push(newNode);
 
-  // Register the node by adding it to the registry
-  const newNode = { nodeID, ipAddress, port };
-  registeredNodes.push(newNode)})
+    res.status(200).json({ message: "Node registered successfully" });
+  });
+
+  
 
   const server = _registry.listen(REGISTRY_PORT, () => {
     console.log(`registry is listening on port ${REGISTRY_PORT}`);
