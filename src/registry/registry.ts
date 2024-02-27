@@ -24,10 +24,22 @@ export async function launchRegistry() {
     res.send("live");
   });
 
-  //Allow nodes to register themselves question 3.1
+  // In-memory registry to store registered nodes
+  const registeredNodes = [];
+  // Define a route for POST /registerNode
+
   _registry.post('/registerNode', (req, res) => {
-    const { nodeID, ipAddress, port } = req.body;
-  });
+  // Extract the necessary information from the request body
+  const { nodeID, ipAddress, port } = req.body;
+
+  // Validate the required fields
+  if (!nodeID || !ipAddress || !port) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  // Register the node by adding it to the registry
+  const newNode = { nodeID, ipAddress, port };
+  registeredNodes.push(newNode)})
 
   const server = _registry.listen(REGISTRY_PORT, () => {
     console.log(`registry is listening on port ${REGISTRY_PORT}`);
