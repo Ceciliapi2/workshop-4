@@ -26,7 +26,7 @@ export async function launchRegistry() {
     res.send("live");
   });
 
-  // RegisterNode route
+  // Question 3
   _registry.post("/registerNode", (req, res) => {
     const { nodeId, pubKey } = req.body;
     const newNode: Node = { nodeId, pubKey };
