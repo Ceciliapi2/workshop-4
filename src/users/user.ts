@@ -9,14 +9,12 @@ export type SendMessageBody = {
   destinationUserId: number;
 };
 
-let lastReceivedMessage: string | null = null;
-let lastSentMessage: string | null = null;
+
 
 export async function user(userId: number) {
   const _user = express();
   _user.use(express.json());
   _user.use(bodyParser.json());
-  let lastCircuit: Node[] = [];
 
   // TODO implement the status route
   // _user.get("/status", (req, res) => {});
@@ -74,6 +72,7 @@ export async function user(userId: number) {
     circuit.reverse();
 
     const entryNode = circuit[0];
+    let lastCircuit: Node[] = [];
     lastCircuit = circuit;
     await fetch(`http://localhost:${BASE_ONION_ROUTER_PORT + entryNode.nodeId}/message`, {
       method: "POST",

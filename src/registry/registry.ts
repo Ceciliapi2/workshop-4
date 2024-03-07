@@ -28,21 +28,28 @@ export async function launchRegistry() {
     res.send("live");
   });
 
-  // Question 3
-  _registry.post("/registerNode", (req: Request, res: Response) => {
-    const registerNodeBody = req.body as RegisterNodeBody;
-    getNodeRegistryBody.nodes.push(registerNodeBody);
-    res.status(200).json({result: "node registered"});
-  });
-
-  _registry.get("/getNodeRegistry", (req, res) => {
-    res.status(200).json(getNodeRegistryBody);
-  });
+  
 
 
-  const server = _registry.listen(REGISTRY_PORT, () => {
-    console.log(`registry is listening on port ${REGISTRY_PORT}`);
-  });
+
+
+  //Question 3
+ // /registerNode
+ _registry.post("/registerNode", (req: Request<RegisterNodeBody>, res: Response) => {
+  const { nodeId, pubKey } = req.body;
+  getNodeRegistryBody.nodes.push({ nodeId, pubKey });
+  res.json({ result: "success" });
+});
+
+// 3.4 allow users to retrieve the registry
+// /getNodeRegistry
+_registry.get("/getNodeRegistry", (req, res) => {
+  res.json(getNodeRegistryBody);
+});
+
+const server = _registry.listen(REGISTRY_PORT, () => {
+  console.log(`registry is listening on port ${REGISTRY_PORT}`);
+});
 
   return server;
 }
